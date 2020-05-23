@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='pyOutLook',
     version='0.1',
-    packages=['lib', 'src'],
+    packages=['pyOutLook', 'lib', 'src'],
     install_requires=['pywin32'],
     url='https://github.com/mani-src/pyOutLook.git',
     license='GNU General Public License Version 3',

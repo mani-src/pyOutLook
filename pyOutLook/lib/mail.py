@@ -14,6 +14,10 @@ class Mail(object):
     def subject(self):
         return self.mail.Subject
 
+    @subject.setter
+    def subject(self, subject):
+        self.mail.Subject = subject
+
     @property
     def topic(self):
         return self.mail.ConversationTopic
@@ -21,6 +25,10 @@ class Mail(object):
     @property
     def body(self):
         return self.mail.Body
+
+    @body.setter
+    def body(self, body):
+        self.mail.Body = body
 
     @property
     def time(self):
@@ -32,9 +40,17 @@ class Mail(object):
     def to(self):
         return self.mail.To
 
+    @to.setter
+    def to(self, to):
+        self.mail.To = to
+
     @property
     def cc(self):
         return self.mail.CC
+
+    @cc.setter
+    def cc(self, cc):
+        self.mail.CC = cc
 
     @property
     def sender(self):
@@ -53,6 +69,22 @@ class Mail(object):
         else:
             return True
 
+    @property
+    def attachments(self):
+        attachments = []
+        for attachment in self.mail.Attachments:
+            attachments.append(attachment)
+        return attachments
+
+    @attachments.setter
+    def attachments(self, attachments):
+        if type(attachments) is not list:
+            raise Exception('Attachments must be added in a list')
+        for attachment in attachments:
+            if not os.path.exists(attachment):
+                raise Exception('Attachment path incorrect or not found')
+            self.mail.Attachments.Add(attachment)
+
     def download_attachments(self, download_path='C:\\Downloads\\'):
         if self.has_attachments is False:
             return False
@@ -62,7 +94,7 @@ class Mail(object):
             attachments = self.mail.Attachments
             for attachment in attachments:
                 file = attachment.FileName
-                attachment.SaveAsFile("".join((download_path, file)))
+                attachment.SaveAsFile(''.join((download_path, file)))
             return True
 
     @property
@@ -72,3 +104,19 @@ class Mail(object):
                                   self.time, '\n\n', '-----------------------------------------------',
                                   self.body, '------------------------------------------------'))
         return display_string
+
+    @property
+    def preview_mail(self):
+        display_string = ''.join(('To: ', self.to, '\n', 'CC: ',
+                                  self.cc, '\n', 'Subject: ', self.subject, '\n', 'Attachments: ',
+                                  str([attachment.FileName for attachment in self.attachments]), '\n\n',
+                                  '-----------------------------------------------', '\n\n', self.body, '\n\n',
+                                  '-----------------------------------------------'))
+        return display_string
+
+    @property
+    def verify(self):
+        if not self.mail.To or not self.mail.Subject:
+            return False
+        else:
+            return True

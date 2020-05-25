@@ -6,6 +6,7 @@ from pyOutLook.lib.mail import Mail
 class Check(Outlook):
     def __init__(self):
         super().__init__()
+        super()._init_com_obj()
 
     def set_outlook_folder(self, folder):
         super()._select_folder(folder_type=folder)

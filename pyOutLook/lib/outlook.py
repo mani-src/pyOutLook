@@ -5,10 +5,14 @@ class Outlook(object):
     def __init__(self):
         self._outlook = None
         self._folder = None
-        self.__init_com_obj()
+        self._mail_item = None
 
-    def __init_com_obj(self):
+    def _init_com_obj(self):
         com_obj = Com('Outlook.Application', 'MAPI')
+        self._outlook = com_obj.com_obj
+
+    def _init_send_com(self):
+        com_obj = Com('Outlook.Application')
         self._outlook = com_obj.com_obj
 
     def _select_folder(self, folder_type):
@@ -46,3 +50,7 @@ class Outlook(object):
             raise Exception('Folder not selected')
         mail_list = self._folder.Items
         return mail_list
+
+    def _create_mail_item(self):
+        self._mail_item = self._outlook.CreateItem(0)    # 0 is for mail item. For the other types, read the references
+        return self._mail_item

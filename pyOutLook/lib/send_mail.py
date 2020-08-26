@@ -11,7 +11,7 @@ class Send(Outlook):
         return self.__mail_item
 
     def send(self, mail):
-        if str(type(mail)) is not 'pyOutLook.lib.mail.Mail':
+        if str(type(mail)) != 'pyOutLook.lib.mail.Mail':
             return
         if not mail.verify:
             raise Exception('To and Subject must be specified')

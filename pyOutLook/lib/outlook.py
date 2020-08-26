@@ -42,7 +42,7 @@ class Outlook(object):
         else:
             raise Exception('Unsupported outlook folder type requested\n '
                             'Please check the docstring to get the supported outlook folder types')
-        if folder_num is not 0:
+        if folder_num != 0:
             self._folder = self._outlook.GetDefaultFolder(folder_num)
 
     def _get_mails(self):
